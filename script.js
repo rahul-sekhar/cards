@@ -46,13 +46,23 @@ $(document).on('mouseup', function () {
 $('#large').load(function () {
     $('#loading').hide();
 
+    setTimeout(center, 100);
+
+    setInterval(updatePos, 50);
+}).attr('src', $('#large').data('src'));
+
+var center = function () {
     imgWidth = $('#large').width();
     imgHeight = $('#large').height();
 
     $window.resize();
 
+    if ($window.scrollLeft() > 0 || $window.scrollTop() > 0) {
+        return;
+    }
     $window.scrollLeft((imgWidth / 2) - (screenWidth / 2));
     $window.scrollTop((imgHeight / 2) - (screenHeight / 2));
+}
 
-    setInterval(updatePos, 50);
-}).attr('src', $('#large').data('src'));
+center();
+setTimeout(center, 100);
