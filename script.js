@@ -5,15 +5,17 @@ $window = $(window);
 nav = $('.nav');
 pos = nav.find('.pos');
 
+var navRatio = 2.5;
+
 $window.on('resize', function () {
     screenWidth = $(window).width();
     screenHeight = $(window).height();
 
     if (screenHeight > screenWidth) {
-        nav.width(screenWidth / 2);
+        nav.width(screenWidth / navRatio);
         nav.height(nav.width() * imgHeight / imgWidth);
     } else {
-        nav.height(screenHeight / 2);
+        nav.height(screenHeight / navRatio);
         nav.width(nav.height() * imgWidth / imgHeight);
     }
 
@@ -24,8 +26,8 @@ $window.on('resize', function () {
 
 
 function updatePos() {
-    pos.css('left', ($window.scrollLeft() * ratio) + 'px')
-    pos.css('top', ($window.scrollTop() * ratio) + 'px')
+    pos.css('left', ($window.scrollLeft() * ratio) - 2 + 'px')
+    pos.css('top', ($window.scrollTop() * ratio) - 2 + 'px')
 }
 
 nav.on('mousedown', function () {
