@@ -34,6 +34,7 @@ nav.on('mousedown', function () {
         var navPos = nav.offset()
         $window.scrollLeft(((e.pageX - navPos.left) / ratio) - (screenWidth / 2));
         $window.scrollTop((e.pageY - navPos.top) / ratio - (screenHeight / 2));
+        updatePos();
     })
 });
 
@@ -42,13 +43,14 @@ $(document).on('mouseup', function () {
     nav.off('mousemove');
 })
 
+$(window).on('scroll', updatePos);
+
 
 $('#large').load(function () {
     $('#loading').hide();
 
     setTimeout(center, 100);
 
-    setInterval(updatePos, 50);
 }).attr('src', $('#large').data('src'));
 
 var center = function () {
