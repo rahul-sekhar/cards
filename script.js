@@ -31,23 +31,31 @@ $(document).ready(function () {
     }).attr('src', largeImage.data('src'));
 
     setTimeout(centerImage, 100);
+
+    loadNotes();
 })
 
 $window.on('resize', function () {
     screenWidth = $(window).width();
     screenHeight = $(window).height();
 
+    var navWidth, navHeight;
+
     if (screenHeight > screenWidth) {
-        nav.width(screenWidth / navRatio);
-        nav.height(nav.width() * imgHeight / imgWidth);
+        navWidth = screenWidth / navRatio;
+        navHeight = nav.width() * imgHeight / imgWidth;
     } else {
-        nav.height(screenHeight / navRatio);
-        nav.width(nav.height() * imgWidth / imgHeight);
+        navHeight = screenHeight / navRatio;
+        navWidth = nav.height() * imgWidth / imgHeight;
     }
 
-    ratio = nav.width() / imgWidth;
-    pos.width(screenWidth * ratio);
-    pos.height(screenHeight * ratio);
+    ratio = navWidth / imgWidth;
+    nav.width(navWidth).height(navHeight);
+    pos.width(screenWidth * ratio).height(screenHeight * ratio);
+
+    // $('.note p').css('width', navWidth).css('height', navHeight);
+
+    updatePos();
 });
 
 
@@ -67,4 +75,23 @@ function centerImage() {
     }
     $window.scrollLeft((imgWidth / 2) - (screenWidth / 2));
     $window.scrollTop((imgHeight / 2) - (screenHeight / 2));
+}
+
+function loadNotes() {
+    $.get('cards.json', function (data) {
+        data.forEach(function (obj) {
+            var note = $('<div class="note"></div>').appendTo('#container');
+            note.css({
+                left: obj.x,
+                top: obj.y,
+                width: obj.w,
+                height: obj.h,
+            })
+            var text = obj.text;
+            if (obj.date) {
+                text += ' (' + obj.date + ')';
+            }
+            $('<p></p>').text(text).appendTo(note);
+        });
+    })
 }
