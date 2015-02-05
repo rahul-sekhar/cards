@@ -119,6 +119,7 @@ $(document).on('click', '#about-link', function (e) {
     savedLeft = $window.scrollLeft();
     $('#container').hide();
     $('.nav').hide();
+    $('#about-link').hide();
 
     $('#about').show()
         .find('.contact').html('<a href="mailto:' + em + '">' + em + '</a>');
@@ -132,6 +133,7 @@ $(document).on('click', '#about .close', function (e) {
 
     $('#container').show();
     $('.nav').show();
+    $('#about-link').show();
 
     $window.scrollTop(savedTop);
     $window.scrollLeft(savedLeft);
