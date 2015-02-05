@@ -39,6 +39,10 @@ img {
     background-color: black;
 }
 
+.nav.drag {
+    cursor: move;
+}
+
 .nav img {
     position: absolute;
     top: 0;
@@ -59,4 +63,8 @@ img {
     position: absolute;
     border: 2px solid #fff;
     background-color: #bbb;
+}
+
+#canvas {
+    display: none;
 }

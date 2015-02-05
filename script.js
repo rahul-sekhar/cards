@@ -1,11 +1,37 @@
-var imgWidth, imgHeight, screenWidth, screenHeight, nav, pos, ratio, $window;
-
-$window = $(window);
-
-nav = $('.nav');
-pos = nav.find('.pos');
+var imgWidth, imgHeight, screenWidth, screenHeight, nav, pos, ratio, $window, largeImage;
 
 var navRatio = 2.5;
+
+$window = $(window);
+$(window).on('scroll', updatePos);
+
+$(document).ready(function () {
+    nav = $('.nav');
+    pos = nav.find('.pos');
+    largeImage = $('#large');
+
+    nav.on('mousedown', function () {
+        nav.addClass('drag');
+        nav.on('mousemove', function (e) {
+            var navPos = nav.offset()
+            $window.scrollLeft(((e.pageX - navPos.left) / ratio) - (screenWidth / 2));
+            $window.scrollTop((e.pageY - navPos.top) / ratio - (screenHeight / 2));
+            updatePos();
+        })
+    });
+
+    $(document).on('mouseup', function () {
+        nav.removeClass('drag');
+        nav.off('mousemove');
+    })
+
+    largeImage.load(function () {
+        $('#loading').hide();
+        setTimeout(centerImage, 100);
+    }).attr('src', largeImage.data('src'));
+
+    setTimeout(centerImage, 100);
+})
 
 $window.on('resize', function () {
     screenWidth = $(window).width();
@@ -30,34 +56,9 @@ function updatePos() {
     pos.css('top', ($window.scrollTop() * ratio) - 2 + 'px')
 }
 
-nav.on('mousedown', function () {
-    nav.addClass('drag');
-    nav.on('mousemove', function (e) {
-        var navPos = nav.offset()
-        $window.scrollLeft(((e.pageX - navPos.left) / ratio) - (screenWidth / 2));
-        $window.scrollTop((e.pageY - navPos.top) / ratio - (screenHeight / 2));
-        updatePos();
-    })
-});
-
-$(document).on('mouseup', function () {
-    nav.removeClass('drag');
-    nav.off('mousemove');
-})
-
-$(window).on('scroll', updatePos);
-
-
-$('#large').load(function () {
-    $('#loading').hide();
-
-    setTimeout(center, 100);
-
-}).attr('src', $('#large').data('src'));
-
-var center = function () {
-    imgWidth = $('#large').width();
-    imgHeight = $('#large').height();
+function centerImage() {
+    imgWidth = largeImage.width();
+    imgHeight = largeImage.height();
 
     $window.resize();
 
@@ -67,6 +68,3 @@ var center = function () {
     $window.scrollLeft((imgWidth / 2) - (screenWidth / 2));
     $window.scrollTop((imgHeight / 2) - (screenHeight / 2));
 }
-
-center();
-setTimeout(center, 100);
