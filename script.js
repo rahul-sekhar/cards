@@ -102,6 +102,9 @@ function loadNotes() {
     });
 }
 
+var savedTop = 0;
+var savedLeft = 0;
+
 $(document).on('click', '#about-link', function (e) {
     e.preventDefault();
     var a = '.rahul',
@@ -112,11 +115,24 @@ $(document).on('click', '#about-link', function (e) {
         f = '@msn',
         em = c + d + a + e + 'ail.com';
 
-    $('#about').fadeIn();
-    $('#about').find('.contact').html('<a href="mailto:' + em + '">' + em + '</a>');
+    savedTop = $window.scrollTop();
+    savedLeft = $window.scrollLeft();
+    $('#container').hide();
+    $('.nav').hide();
+
+    $('#about').show()
+        .find('.contact').html('<a href="mailto:' + em + '">' + em + '</a>');
+
+    $window.scrollTop(0);
 });
 
 $(document).on('click', '#about .close', function (e) {
     e.preventDefault();
-    $('#about').fadeOut();
+    $('#about').hide();
+
+    $('#container').show();
+    $('.nav').show();
+
+    $window.scrollTop(savedTop);
+    $window.scrollLeft(savedLeft);
 });
