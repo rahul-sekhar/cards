@@ -77,21 +77,48 @@ function centerImage() {
     $window.scrollTop((imgHeight / 2) - (screenHeight / 2));
 }
 
+function createNote(obj, index) {
+    var note = $('<div class="note"></div>').appendTo('#container');
+    note.css({
+        left: obj.x,
+        top: obj.y,
+        width: obj.w,
+        height: obj.h,
+    })
+    var text = obj.text;
+    if (obj.date) {
+        text += ' (' + obj.date + ')';
+    }
+    $('<p></p>').text(text).appendTo(note);
+
+    if (index) {
+        note.data('index', index);
+    }
+}
+
 function loadNotes() {
     $.get('cards.json', function (data) {
         data.forEach(function (obj) {
-            var note = $('<div class="note"></div>').appendTo('#container');
-            note.css({
-                left: obj.x,
-                top: obj.y,
-                width: obj.w,
-                height: obj.h,
-            })
-            var text = obj.text;
-            if (obj.date) {
-                text += ' (' + obj.date + ')';
-            }
-            $('<p></p>').text(text).appendTo(note);
+            createNote(obj);
         });
-    })
+    });
 }
+
+$(document).on('click', '#about-link', function (e) {
+    e.preventDefault();
+    var a = '.rahul',
+        b = 'hff',
+        c = 'sekh',
+        d = 'ar',
+        e = '@gm',
+        f = '@msn',
+        em = c + d + a + e + 'ail.com';
+
+    $('#about').fadeIn();
+    $('#about').find('.contact').html('<a href="mailto:' + em + '">' + em + '</a>');
+});
+
+$(document).on('click', '#about .close', function (e) {
+    e.preventDefault();
+    $('#about').fadeOut();
+});

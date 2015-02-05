@@ -82,12 +82,14 @@ img {
     top: 0;
     left: 0;
 
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.6);
     color: white;
     margin: 0;
-    padding: 20px;
+    padding: 14px 20px;
 
-    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
 
     opacity: 0;
     z-index: -1;
@@ -108,6 +110,78 @@ img {
 }
 
 
+/* --- About section ---*/
+
+#about-link {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+    background-color: #262626;
+    display: block;
+    padding: 12px 16px;
+    font-family: Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    border: 1px solid #aaa;
+    opacity: 0.6;
+    transition: opacity 300ms ease;
+    font-size: 14px;
+}
+
+#about-link:hover {
+    opacity: 0.8;
+}
+
+#about {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #262626;
+    padding: 80px;
+    display: none;
+}
+
+#about p {
+    color: white;
+    line-height: 150%;
+    font-size: 24px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-family: 'Lato', sans-serif;
+    font-family: 'Alegreya Sans', sans-serif;
+    font-family: 'Raleway', sans-serif;
+    max-width: 800px;
+}
+
+#about p:first-child {
+    margin-top: 0;
+}
+
+#about a {
+    color: white;
+    transition: color 300ms ease;
+    text-decoration: underline;
+}
+
+#about a:hover {
+    color: #ddd;
+}
+
+#about .code {
+    font-size: 14px;
+}
+
+#about .close {
+    display: block;
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    font-size: 30px;
+    text-decoration: none;
+}
+
+
 /* --- For note making --- */
 #canvas {
     display: block;
@@ -117,32 +191,31 @@ img {
     cursor: default;
 }
 
-.box {
-    position: absolute;
+body.edit .note {
     background-color: rgba(0,0,0,0.5);
-    color: white;
     padding: 20px;
 }
 
-.box p {
-    font-family: Arial, sans-serif;
-    margin: 0;
+body.edit .note p {
+    position: static;
+    padding: 0;
+    background-color: transparent;
+    color: white;
+    opacity: 1;
+    z-index: 0;
 }
 
 #save {
     position: fixed;
     top: 10px;
     left: 10px;
+    z-index: 10;
 }
 
 #clear {
     position: fixed;
     top: 10px;
     left: 60px;
-}
 
-#import {
-    position: fixed;
-    top: 10px;
-    left: 120px;
+    z-index: 10;
 }

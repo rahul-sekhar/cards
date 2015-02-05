@@ -6,7 +6,7 @@ $(document).ready(function () {
     $window = $(window),
     data = [];
 
-  $('.note').hide();
+  $('body').addClass('edit');
 
   canvas.on('mousedown', function (e) {
     rect.startX = e.pageX - $(window).scrollLeft();
@@ -16,20 +16,40 @@ $(document).ready(function () {
 
   $(document).on('mouseup', function (e) {
     if (drag && rect.w > 20 && rect.h > 20) {
+      var obj = {
+        x: rect.startX + $window.scrollLeft(),
+        y: rect.startY + $window.scrollTop(),
+        w: rect.w,
+        h: rect.h,
+      }
+
       var text = prompt('Text:');
       if (text) {
-        var obj = {
-          x: rect.startX + $window.scrollLeft(),
-          y: rect.startY + $window.scrollTop(),
-          w: rect.w,
-          h: rect.h,
-          text: text
-        }
-        createBox(obj);
+        var date = prompt('Date:');
+        obj.text = text;
+        obj.date = date;
+        createNote(obj, data.length);
         data.push(obj);
       }
     }
     drag = false;
+  });
+
+  $('#container').on('click', '.note', function (e) {
+    var index = $(this).data('index');
+    var obj = data[index];
+
+    var text = prompt('Text:', obj.text);
+    if (text) {
+      var date = prompt('Date:', obj.date);
+      data[index].text = text;
+      data[index].date = date;
+      $(this).remove();
+      createNote(obj, index);
+    } else {
+      data.splice(index, 1);
+      $(this).remove();
+    }
   });
 
   $(document).on('mousemove', function (e) {
@@ -71,16 +91,6 @@ $(document).ready(function () {
     ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
   }
 
-  function createBox(obj) {
-    var div = $('<div class="box"></div>').appendTo('#container');
-    div.css('top', obj.y + 'px');
-    div.css('left', obj.x + 'px');
-    div.css('width', obj.w + 'px');
-    div.css('height', obj.h + 'px');
-
-    $('<p></p>').text(obj.text).appendTo(div);
-  }
-
   $window.on('resize', function () {
     canvas[0].width = $window.width();
     canvas[0].height = $window.height();
@@ -88,10 +98,8 @@ $(document).ready(function () {
 
   $window.resize();
 
-
   $('<button id="clear">Clear</button>').on('click', function () {
-    data = [];
-    $('.box').remove();
+    setData([]);
   }).appendTo('#container');
 
   $('<button id="save">Save</button>').on('click', function () {
@@ -99,22 +107,15 @@ $(document).ready(function () {
     window.open('data:text/json,' + encodeURIComponent(jsonString));
   }).appendTo('#container');
 
-  $('<span id="import"></span>').on('change', 'input[type="file"]', function () {
-    if (this.files) {
-      importFile(this.files[0]);
-    }
-    $(this).replaceWith('<input type="file" />');
-  }).append('<input type="file" />')
-    .appendTo('#container');
-
-  function importFile(file) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      data = JSON.parse(reader.result);
-      data.forEach(function (obj) {
-        createBox(obj);
-      });
-    }
-    reader.readAsText(file);
+  function setData(importedData) {
+    data = importedData;
+    $('.note').remove();
+    data.forEach(function (obj, index) {
+      createNote(obj, index);
+    });
   }
+
+  $.get('cards.json', function (importData) {
+      setData( importData );
+  });
 })
