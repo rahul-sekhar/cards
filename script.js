@@ -43,17 +43,15 @@ $window.on('resize', function () {
 
     if (screenHeight > screenWidth) {
         navWidth = screenWidth / navRatio;
-        navHeight = nav.width() * imgHeight / imgWidth;
+        navHeight = navWidth * imgHeight / imgWidth;
     } else {
         navHeight = screenHeight / navRatio;
-        navWidth = nav.height() * imgWidth / imgHeight;
+        navWidth = navHeight * imgWidth / imgHeight;
     }
 
     ratio = navWidth / imgWidth;
     nav.width(navWidth).height(navHeight);
     pos.width(screenWidth * ratio).height(screenHeight * ratio);
-
-    // $('.note p').css('width', navWidth).css('height', navHeight);
 
     updatePos();
 });
